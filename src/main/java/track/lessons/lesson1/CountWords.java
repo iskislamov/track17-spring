@@ -39,7 +39,7 @@ public class CountWords {
         while ((line = reader.readLine()) != null) {
             try {
                 answer += Integer.parseInt(line);
-            } catch (NumberFormatException e) {}
+            } catch (NumberFormatException e) { }
         }
         return answer;
     }
