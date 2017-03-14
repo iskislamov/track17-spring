@@ -40,7 +40,7 @@ public class CountWords {
             try {
                 answer += Integer.parseInt(line);
             } catch (NumberFormatException e) {}
-            }
+        }
         return answer;
     }
 
