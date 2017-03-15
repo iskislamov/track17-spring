@@ -98,12 +98,12 @@ public class MyLinkedList extends List implements Stack, Queue {
         if (tail == null) {
             throw new NoSuchElementException();
         }
-        int item = tail.val;
         if (tail.prev == null) {
             head = null;
         } else {
             tail.prev.next = null;
         }
+        final int item = tail.val;
         tail = tail.prev;
         --size;
         return item;
@@ -119,12 +119,12 @@ public class MyLinkedList extends List implements Stack, Queue {
         if (head == null) {
             throw new NoSuchElementException();
         }
-        int item = head.val;
         if (head.next == null) {
             tail = null;
         } else {
             head.next.prev = null;
         }
+        int item = head.val;
         head = head.next;
         --size;
         return item;
