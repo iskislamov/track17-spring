@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
  * Должен наследовать List
  * Односвязный список
  */
-public class MyLinkedList extends List {
+public class MyLinkedList extends List implements Stack, Queue {
 
     /**
      * private - используется для сокрытия этого класса от других.
@@ -14,6 +14,9 @@ public class MyLinkedList extends List {
      * <p>
      * static - позволяет использовать Node без создания экземпляра внешнего класса
      */
+
+    public MyLinkedList() { }
+
     private static class Node {
         Node prev;
         Node next;
@@ -27,21 +30,108 @@ public class MyLinkedList extends List {
     }
 
     @Override
-    void add(int item) {
+    public void add(int item) {
+        Node prevTail = tail;
+        Node node = new Node(prevTail, null, item);
+        tail = node;
+        if (prevTail == null) {
+            head = node;
+        } else {
+            prevTail.next = node;
+        }
+        ++size;
     }
 
     @Override
-    int remove(int idx) throws NoSuchElementException {
-        return 0;
+    public int remove(int idx) throws NoSuchElementException {
+        if (idx >= size) {
+            throw new NoSuchElementException();
+        }
+        Node node = head;
+        for (int i = 0; i < idx; ++i) {
+            node = node.next;
+        }
+        Node next = node.next;
+        Node prev = node.prev;
+        if (prev == null) {
+            head = next;
+        } else {
+            prev.next = next;
+            node.prev = null;
+        }
+        if (next == null) {
+            tail = prev;
+        } else {
+            next.prev = prev;
+            node.next = null;
+
+        }
+        node.val = 0;
+        size--;
+        return node.val;
     }
 
     @Override
-    int get(int idx) throws NoSuchElementException {
-        return 0;
+    public int get(int idx) throws NoSuchElementException {
+        if (idx >= size) {
+            throw new NoSuchElementException();
+        }
+        Node node = head;
+        for (int i = 0; i < idx; ++i) {
+            node = node.next;
+        }
+        return node.val;
     }
 
     @Override
-    int size() {
-        return 0;
+    public int size() {
+        return size;
     }
+
+    @Override
+    public void push(int item) {
+        this.add(item);
+    }
+
+    @Override
+    public int pop() throws NoSuchElementException {
+        if (tail == null) {
+            throw new NoSuchElementException();
+        }
+        if (tail.prev == null) {
+            head = null;
+        } else {
+            tail.prev.next = null;
+        }
+        final int item = tail.val;
+        tail = tail.prev;
+        --size;
+        return item;
+    }
+
+    @Override
+    public void enqueue(int item) {
+        this.add(item);
+    }
+
+    @Override
+    public int dequeue() throws NoSuchElementException {
+        if (head == null) {
+            throw new NoSuchElementException();
+        }
+        if (head.next == null) {
+            tail = null;
+        } else {
+            head.next.prev = null;
+        }
+        int item = head.val;
+        head = head.next;
+        --size;
+        return item;
+    }
+
+    private Node head;
+    private Node tail;
+    private int size;
+
 }
